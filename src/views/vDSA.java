@@ -138,7 +138,7 @@ public class vDSA extends javax.swing.JFrame {
             }
         });
 
-        jLabel7.setText("Status: Current Algorithm is RSA");
+        jLabel7.setText("Status: Current Algorithm is DSA");
 
         jLabel9.setText("List Public Key:");
 

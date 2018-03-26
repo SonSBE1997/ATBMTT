@@ -6,6 +6,7 @@
 package views;
 
 import javax.swing.JOptionPane;
+import javax.swing.JRootPane;
 import javax.swing.UIManager;
 import socket.IPAddress;
 import socket.Server;
@@ -15,10 +16,11 @@ import socket.Server;
  * @author SBE
  */
 public class ServerUI extends javax.swing.JFrame {
-
+    
     private final Server server;
     boolean serverIsRunning;
     static Thread thread;
+    JRootPane rootPane1 = this.getRootPane();
 
     /**
      * Creates new form Server
@@ -27,6 +29,7 @@ public class ServerUI extends javax.swing.JFrame {
         initComponents();
         server = new Server();
         serverIsRunning = false;
+        rootPane.setDefaultButton(btnCreateServer);
         txtIPAddress.setText(IPAddress.getIpAddressLocalHost());
     }
 
@@ -153,6 +156,7 @@ public class ServerUI extends javax.swing.JFrame {
         txtPort.setEditable(false);
         serverIsRunning = true;
         btnStopServer.setEnabled(true);
+        rootPane.setDefaultButton(btnStopServer);
     }//GEN-LAST:event_btnCreateServerActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -177,6 +181,7 @@ public class ServerUI extends javax.swing.JFrame {
         btnCreateServer.setEnabled(true);
         btnCreateServer.setText("Create server");
         txtPort.setEditable(true);
+        rootPane.setDefaultButton(btnCreateServer);
         serverIsRunning = false;
         btnStopServer.setEnabled(false);
     }//GEN-LAST:event_btnStopServerActionPerformed
@@ -197,7 +202,7 @@ public class ServerUI extends javax.swing.JFrame {
                     break;
                 }
             }
-
+            
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(ServerUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);

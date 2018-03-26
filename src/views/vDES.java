@@ -5,7 +5,7 @@
  */
 package views;
 
-import controllers.AES_DESController;
+import controllers.DESController;
 import controllers.OpenFile;
 import javax.swing.JRootPane;
 import javax.swing.UIManager;
@@ -17,7 +17,7 @@ import socket.IPAddress;
  */
 public class vDES extends javax.swing.JFrame {
 
-    AES_DESController userController;
+    DESController userController;
     JRootPane rootPane1 = this.getRootPane();
 
     /**
@@ -29,13 +29,12 @@ public class vDES extends javax.swing.JFrame {
         txtIPAddress.setText(IPAddress.getIpAddressLocalHost());
         rootPane1.setDefaultButton(btnConnect);
 
-        userController = new AES_DESController();
+        userController = new DESController();
         userController.setTxtDecryptMessage(txtDecryptMessage);
         userController.setTxtKey(txtKey);
         userController.setTxtName(txtName);
         userController.setTxtOriginalMessage(txtOriginalMessage);
         userController.setTxtSendMessage(txtSendMessage);
-        userController.setAlgorithm("DES");
     }
 
     /**
@@ -132,7 +131,7 @@ public class vDES extends javax.swing.JFrame {
             }
         });
 
-        jLabel7.setText("Status: Current Algorithm is AES");
+        jLabel7.setText("Status: Current Algorithm is DES");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

@@ -316,7 +316,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel7">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Status: Current Algorithm is RSA"/>
+        <Property name="text" type="java.lang.String" value="Status: Current Algorithm is DSA"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel9">

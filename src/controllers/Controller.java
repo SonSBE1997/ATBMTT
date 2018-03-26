@@ -5,7 +5,12 @@
  */
 package controllers;
 
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -22,7 +27,6 @@ public class Controller {
 
     Client client;
     boolean isConnected;
-    String algorithm;
     JTextPane txtOriginalMessage;
     JTextPane txtDecryptMessage;
     JTextField txtName;
@@ -36,10 +40,6 @@ public class Controller {
 //Getter and setter 
     public boolean getIsConnected() {
         return isConnected;
-    }
-
-    public void setAlgorithm(String algorithm) {
-        this.algorithm = algorithm;
     }
 
     public void setTxtOriginalMessage(JTextPane txtOriginalMessage) {
@@ -83,8 +83,30 @@ public class Controller {
     }
 
     public void receive(Socket server) {
+        while (true) {
+            try {
+                /* Khái báo các luồng vào dữ liệu*/
+                InputStream is = server.getInputStream();
+                DataInputStream din = new DataInputStream(is);
+                /* -----------------------------------------------
+                * Nhận mảng byte dữ liệu từ server gửi về
+                * và chuyển sang chuỗi và hiển thị lên màn hình
+                * -----------------------------------------------*/
+                int bufferSize = server.getReceiveBufferSize();
+                byte[] bytes = new byte[bufferSize];
+                if (din.read(bytes) >= 0) {
+                    receiveMessage(bytes);
+                }
+            } catch (IOException ex) {
+                client.closeConnection();
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
+    public void receiveMessage(byte[] bytes) {
+    }
+    
     public String getSendMessageWithSenderName(String message) {
         return String.format("%s: %s", txtName.getText().trim(), message);
     }

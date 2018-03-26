@@ -5,7 +5,7 @@
  */
 package views;
 
-import controllers.AES_DESController;
+import controllers.AESController;
 import controllers.OpenFile;
 import javax.swing.JRootPane;
 import javax.swing.UIManager;
@@ -17,7 +17,7 @@ import socket.IPAddress;
  */
 public class vAES extends javax.swing.JFrame {
 
-    AES_DESController userController;
+    AESController userController;
     JRootPane rootPane1 = this.getRootPane();
 
     /**
@@ -29,13 +29,12 @@ public class vAES extends javax.swing.JFrame {
         txtIPAddress.setText(IPAddress.getIpAddressLocalHost());
         rootPane1.setDefaultButton(btnConnect);
 
-        userController = new AES_DESController();
+        userController = new AESController();
         userController.setTxtDecryptMessage(txtDecryptMessage);
         userController.setTxtKey(txtKey);
         userController.setTxtName(txtName);
         userController.setTxtOriginalMessage(txtOriginalMessage);
         userController.setTxtSendMessage(txtSendMessage);
-        userController.setAlgorithm("AES");
     }
 
     /**
