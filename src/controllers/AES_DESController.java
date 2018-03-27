@@ -63,7 +63,6 @@ public class AES_DESController extends Controller {
             if (key.equals("")) {
                 return;
             }
-            txtOriginalMessage.setText(txtOriginalMessage.getText() + message + "\n");
             receiveData(message);
         }
     }

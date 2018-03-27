@@ -14,24 +14,39 @@ import models.SHA;
  */
 public class AESwithSHAController extends AES_DESController {
 
+    int receiveNumber;
+    String hash;
+
+    public AESwithSHAController() {
+        receiveNumber = 0;
+        hash = "";
+    }
+
     @Override
     public void receiveData(String message) {
-        String[] result = message.split(":");
-        String decypt = AES.decrypt(result[0], txtKey.getText().trim());
-        String hashText = SHA.encrytSHA1(decypt);
-        if (hashText.equals(result[1])) {
-            txtDecryptMessage.setText(txtDecryptMessage.getText() + decypt + "\nMesage wasn't edited\n");
+        receiveNumber++;
+        if (receiveNumber == 1) {
+            hash = AES.decrypt(message, txtKey.getText().trim());
         } else {
-            txtDecryptMessage.setText(txtDecryptMessage.getText() + decypt + "\nMesage was edited\n");
+            String decypt = AES.decrypt(message, txtKey.getText().trim());
+            if (hash.equals(SHA.encrytSHA1(decypt))) {
+                txtDecryptMessage.setText(txtDecryptMessage.getText() + decypt + "\n=>Mesage wasn't edited\n");
+            } else {
+                txtDecryptMessage.setText(txtDecryptMessage.getText() + decypt + "\n=>Mesage was edited\n");
+            }
+            txtOriginalMessage.setText(txtOriginalMessage.getText() + message + "\n\n");
+            receiveNumber = 0;
+            hash = "";
         }
-        txtOriginalMessage.setText(txtOriginalMessage.getText() + "\n");
+
     }
 
     @Override
     public void sendEncyptedData(String send) {
 
         String hashText = SHA.encrytSHA1(send);
-        client.send(AES.encrypt(send, key) + ":" + hashText);
+        client.send(AES.encrypt(hashText, key));
+        client.send(AES.encrypt(send, key));
     }
 
 }

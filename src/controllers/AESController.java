@@ -20,6 +20,7 @@ public class AESController extends AES_DESController {
 
     @Override
     public void receiveData(String message) {
+        txtOriginalMessage.setText(txtOriginalMessage.getText() + message + "\n");
         txtDecryptMessage.setText(txtDecryptMessage.getText() + AES.decrypt(message, txtKey.getText().trim()) + "\n");
     }
 

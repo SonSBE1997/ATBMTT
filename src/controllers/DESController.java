@@ -15,6 +15,7 @@ public class DESController extends AES_DESController {
 
     @Override
     public void receiveData(String message) {
+        txtOriginalMessage.setText(txtOriginalMessage.getText() + message + "\n");
         txtDecryptMessage.setText(txtDecryptMessage.getText() + DES.decrypt(message, txtKey.getText().trim()) + "\n");
     }
 
