@@ -19,14 +19,14 @@ import java.util.Base64;
  */
 public class DSA {
 
-//    public static void main(String[] args) throws Exception {
-//        KeyPair keyPair = buildKeyPair();
-//        PublicKey pubKey = keyPair.getPublic();
-//        PrivateKey privateKey = keyPair.getPrivate();
-//        String signed = sign("hihi", privateKey);
-//        System.out.println("" + signed);
-//        System.out.println("" + verify("hihi", signed, KeyToString.strToPublicKeyDSA(KeyToString.publicKeyToString(pubKey))));
-//    }
+    public static void main(String[] args) throws Exception {
+        KeyPair keyPair = buildKeyPair();
+        PublicKey pubKey = keyPair.getPublic();
+        PrivateKey privateKey = keyPair.getPrivate();
+        String signed = sign("hihi", privateKey);
+        System.out.println("" + signed);
+        System.out.println("" + verify("hihi", signed, KeyToString.strToPublicKeyDSA(KeyToString.publicKeyToString(pubKey))));
+    }
 
     public static KeyPair buildKeyPair() throws NoSuchAlgorithmException {
         final int keySize = 512;

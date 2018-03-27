@@ -5,15 +5,11 @@
  */
 package models;
 
-import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import javax.crypto.Cipher;
 
@@ -30,10 +26,10 @@ public class RSA {
      * @throws NoSuchAlgorithmException
      */
     public static KeyPair buildKeyPair() throws NoSuchAlgorithmException {
-        final int keySize = 2048;
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-        keyPairGenerator.initialize(keySize);
-        return keyPairGenerator.genKeyPair();
+        final int keySize = 2048; //đặt kích thước khóa là 2048 bíts// kích thước khóa của RSA có thể:từ 1024 bits trở lên
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");//bộ sinh khóa có sẵn
+        keyPairGenerator.initialize(keySize); //sinh cặp khóa
+        return keyPairGenerator.genKeyPair(); //trả về cặp khóa
     }
 
     /**
@@ -92,22 +88,33 @@ public class RSA {
         return new String(cipher.doFinal(Base64.getDecoder().decode(encrypted)));
     }
 
+// Demo
     public static void main(String[] args) throws Exception {
         // generate public and private keys
         KeyPair keyPair = RSA.buildKeyPair();
         PublicKey publicKey = keyPair.getPublic();
         PrivateKey privateKey = keyPair.getPrivate();
 
-        String strPrivate = KeyToString.privateKeyToString(privateKey);
-        System.out.println("Private Key:" + privateKey);
-        System.out.println("String private:" + strPrivate);
-        System.out.println("Private Key:" + KeyToString.strToPrivateKeyRSA(strPrivate));
-//        // encrypt the message
-//        String encrypted = RSA.sign(privateKey, "This is a secret message");
-//        System.out.println("\nSign:" + encrypted);  // <<encrypted message>>
-//        String strPub = publicKeyToString(publicKey);
-//        // decrypt the message
-//        String secret = RSA.verifySignature(strToPublicKeyRSA(strPub), encrypted);
-//        System.out.println("Verify:" + secret);     // This is a secret message
+        String originalMess = "từng bước chân cuốn đi mùa thu xa lắm";
+        //////////Ký
+        System.out.println("Ký");
+        // sign the message
+        String sign = RSA.sign(privateKey, originalMess);
+        System.out.println("Original message:" + originalMess);
+        System.out.println("Sign:" + sign);
+        // verify the message
+        String verifySignature = RSA.verifySignature(publicKey, sign);
+        System.out.println("Verify:" + verifySignature);
+        
+        
+        //////// Mã hóa
+        System.out.println("Mã hóa");
+        //encrypt the message
+        String encrypted = RSA.encrypt(publicKey, originalMess);
+        System.out.println("Original message:" + originalMess);
+        System.out.println("Encrypt:" + sign);
+        // decrypt the message
+        String decypted = RSA.decrypt(privateKey, encrypted);
+        System.out.println("Decrypt:" + decypted);
     }
 }

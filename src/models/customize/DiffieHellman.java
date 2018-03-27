@@ -19,13 +19,14 @@ import javax.crypto.spec.DHParameterSpec;
  * @author SBE
  */
 public class DiffieHellman {
+//Attribute
 
-    //keySize = 1024
     //Private key
     private BigInteger privateKey;
-    //Common Key
-    BigInteger p;
-    BigInteger g;
+    //Các tham số để tính khóa chung
+    BigInteger p; //modules
+    BigInteger g; //prime of p
+//Getter and setter
 
     public BigInteger getPrivateKey() {
         return privateKey;
@@ -35,50 +36,64 @@ public class DiffieHellman {
         this.privateKey = privateKey;
     }
 
+// Method
+    /**
+     * Tính khóa công khai. mỗi người tự tính r gửi khóa công khai cho người còn
+     * lại
+     *
+     * @return publicKey= g ^ primaryKey mod p;
+     */
     public BigInteger getPublicKey() {
         return g.modPow(privateKey, p);
     }
 
+    /**
+     * Hàm tính khóa chung
+     *
+     * @param publicKey
+     * @return commonKey = pubB ^ priA mod p; người A tính, tương tự với người B
+     * 2 người tính sao cho commonKey giống nhau //khác nhau là tính sai
+     */
     public BigInteger getPrivateCommonKey(BigInteger publicKey) {
         return publicKey.modPow(privateKey, p);
     }
 
+    /**
+     *
+     * @throws NoSuchAlgorithmException keyPairGenerator không thể sinh ra khóa
+     * của thuật toán Diffie Hellman, throws dùng để bắt lỗi
+     */
     private void generateCommonKey() throws NoSuchAlgorithmException {
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("DiffieHellman");
-        keyPairGenerator.initialize(512);
-        KeyPair keyPair = keyPairGenerator.generateKeyPair();
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("DiffieHellman"); //bộ sinh khóa có sẵn
+        keyPairGenerator.initialize(512);  //khởi tạo kích thước khóa = 1024 bits hoặc 512 bits
+        KeyPair keyPair = keyPairGenerator.generateKeyPair(); //sinh khóa 
 
-//        BigInteger x = ((DHPrivateKey) keyPair.getPrivate()).getX();
-//        BigInteger y = ((DHPublicKey) keyPair.getPublic()).getY();
-//        System.out.println(x);
-//        System.out.println(y);
-//        DHParameterSpec parameter = ((DHPrivateKey) keyPair.getPrivate()).getParams();
-//        System.out.println(parameter.getG());
-//        System.out.println(parameter.getP());
-//        //y = (G ^ x) mod P
-//        System.out.println("\n" + g.modPow(x, p));
-        DHParameterSpec params = ((DHPublicKey) keyPair.getPublic()).getParams();
+        DHParameterSpec params = ((DHPublicKey) keyPair.getPublic()).getParams();//lấy các tham số để tính khóa chung
         p = params.getP(); //modules
         g = params.getG(); //prime of p
 
-        System.out.println(p);
-        System.out.println(g);
-
+//        System.out.println(p);
+//        System.out.println(g);
     }
 
     public static void main(String[] args) {
+        // Phải có try catch để bắt lỗi do throws (ở trên) đẩy lên
         try {
-            DiffieHellman dh = new DiffieHellman();
-            dh.generateCommonKey();
+            DiffieHellman dh = new DiffieHellman(); //Tạo đối tượng
+            dh.generateCommonKey(); //Sinh khóa chung
 
-            dh.setPrivateKey(BigInteger.valueOf(25));
-            BigInteger pubA = dh.getPublicKey();
+            //A
+            dh.setPrivateKey(BigInteger.valueOf(25)); //Giả sử priA = 25 <=> dh.privateKey = 25 //trong vở ký hiệu là x
+            BigInteger pubA = dh.getPublicKey(); // A tính pubA= g ^ xA mod p, A gửi pubA cho B // yA 
 
-            dh.setPrivateKey(BigInteger.valueOf(45));
-            BigInteger pubB = dh.getPublicKey();
-
+            //B
+            dh.setPrivateKey(BigInteger.valueOf(45)); //priB = 45, dh.privateKey = 45
+            BigInteger pubB = dh.getPublicKey(); //B tính pubB  r gửi cho A
+            //B tính: commonKey = pubA ^ priB mod dh.p;  //dh.privateKey = priB
             System.out.println("Private Common Key: B calculate:" + dh.getPrivateCommonKey(pubA));
-            dh.setPrivateKey(BigInteger.valueOf(25));
+
+            dh.setPrivateKey(BigInteger.valueOf(25)); //đặt lại để trở lại vai trò người A, dh.privateKey = 25
+            //A tính: commonKey = pubB ^ priB mod dh.p; //pubB ^ priA mod dh.p 
             System.out.println("Private Common Key: A calculate:" + dh.getPrivateCommonKey(pubB));
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(DiffieHellman.class.getName()).log(Level.SEVERE, null, ex);
