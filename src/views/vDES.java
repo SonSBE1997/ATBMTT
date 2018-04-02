@@ -69,7 +69,6 @@ public class vDES extends javax.swing.JFrame {
         btnOpenFile = new javax.swing.JButton();
         jLabel7 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
         jLabel1.setText("IPAddress:");

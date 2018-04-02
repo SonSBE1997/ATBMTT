@@ -90,6 +90,7 @@ public class RSA {
 
 // Demo
     public static void main(String[] args) throws Exception {
+        
         // generate public and private keys
         KeyPair keyPair = RSA.buildKeyPair();
         PublicKey publicKey = keyPair.getPublic();

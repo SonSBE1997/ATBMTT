@@ -76,7 +76,6 @@ public class vDSA extends javax.swing.JFrame {
         txtPublicKey = new javax.swing.JTextField();
         btnSendKey = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
         jLabel1.setText("IPAddress:");

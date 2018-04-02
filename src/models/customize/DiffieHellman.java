@@ -5,6 +5,7 @@
  */
 package models.customize;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -81,9 +82,9 @@ public class DiffieHellman {
         try {
             DiffieHellman dh = new DiffieHellman(); //Tạo đối tượng
             dh.generateCommonKey(); //Sinh khóa chung
-
-            //A
-            dh.setPrivateKey(BigInteger.valueOf(25)); //Giả sử priA = 25 <=> dh.privateKey = 25 //trong vở ký hiệu là x
+            BigInteger bigInteger = new BigInteger("what the hell?".getBytes("UTF-8"));
+            //A BigInteger.valueOf(25)
+            dh.setPrivateKey(bigInteger); //Giả sử priA = 25 <=> dh.privateKey = 25 //trong vở ký hiệu là x
             BigInteger pubA = dh.getPublicKey(); // A tính pubA= g ^ xA mod p, A gửi pubA cho B // yA 
 
             //B
@@ -92,9 +93,10 @@ public class DiffieHellman {
             //B tính: commonKey = pubA ^ priB mod dh.p;  //dh.privateKey = priB
             System.out.println("Private Common Key: B calculate:" + dh.getPrivateCommonKey(pubA));
 
-            dh.setPrivateKey(BigInteger.valueOf(25)); //đặt lại để trở lại vai trò người A, dh.privateKey = 25
+            dh.setPrivateKey(bigInteger); //đặt lại để trở lại vai trò người A, dh.privateKey = 25
             //A tính: commonKey = pubB ^ priB mod dh.p; //pubB ^ priA mod dh.p 
             System.out.println("Private Common Key: A calculate:" + dh.getPrivateCommonKey(pubB));
+        } catch (UnsupportedEncodingException ex) {
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(DiffieHellman.class.getName()).log(Level.SEVERE, null, ex);
         }
